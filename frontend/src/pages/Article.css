@@ -1,0 +1,10 @@
+.article-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 800px;
+}
+.article-container p {
+  text-align: justify;
+}/*# sourceMappingURL=Article.css.map */
