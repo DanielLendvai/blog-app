@@ -31,6 +31,12 @@
   text-align: justify;
   font-size: 2vh;
 }
+#root #page-body .comments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
 #root #page-body .article-list-item {
   text-decoration: none;
   color: black;

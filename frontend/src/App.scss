@@ -28,7 +28,13 @@
               text-align: justify;
               font-size: 2vh;
           }
-      }
+        }
+        .comments-container {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          width: 100%;
+        }
       .article-list-item {
         text-decoration: none;
         color: black;

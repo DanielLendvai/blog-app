@@ -47,11 +47,30 @@ app.put("/api/articles/:name/upvote", async (req, res) => {
     const article = await db.collection("articles").findOne({ name });
 
     if (article) {
-        res.send(`The ${name} article now has ${article.upvotes} upvotess`);
+        res.json(article);
     } else {
         res.send("That article doesn't exist");
     }
 });
+
+//downwote
+app.put("/api/articles/:name/downvote", async (req,res)=> {
+    const {name} = req.params;
+
+    await db.collection("articles").updateOne(
+        { name },
+        {
+            $inc: { upvotes: -1 },
+        }
+    );
+    const article = await db.collection("articles").findOne({ name });
+
+    if (article) {
+        res.json(article);
+    } else {
+        res.send("That article doesn't exist");
+    }
+})
 
 //comment
 app.post("/api/articles/:name/comments", async (req, res) => {
