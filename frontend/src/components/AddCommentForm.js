@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 
 const AddCommentForm = ({ articleName, onArticleUpdated }) => {
-
     const [name, setName] = useState("");
     const [commentText, setCommentText] = useState("");
 
@@ -23,24 +22,25 @@ const AddCommentForm = ({ articleName, onArticleUpdated }) => {
     return (
         <div id="add-comment-form">
             <h3>Add a comment</h3>
-            <label>
-                Name:
-                <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    type="text"
-                />
-            </label>
-            <label>
-                Comment
-                <textarea
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    row="4"
-                    cols="50"
-                />
-            </label>
-            <button onClick={addComment}>Send comment.</button>
+            <label>Name:</label>
+            <input
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+            />
+            <label>Comment</label>
+            <textarea
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                row="4"
+                cols="50"
+            />
+            {(commentText.length && name.length > 0) ? (
+                <button onClick={addComment}>Send comment.</button>
+            ) : (
+                ""
+            )}
         </div>
     );
 };
