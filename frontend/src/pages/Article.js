@@ -40,11 +40,11 @@ const Article = () => {
         const updatedArticle = response.data;
         setArticleInfo(updatedArticle);
     };
-
+    // console.log(articleInfo)
     if (!article) {
         return <NotFoundPage />;
     }
-    console.log(articleInfo )
+    // console.log(articleInfo )
     return (
         <div className="article-container">
             <h1>{article.title}</h1>
@@ -56,8 +56,13 @@ const Article = () => {
             {article.content.map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
             ))}
-            <AddCommentForm articleName={articleId} onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)} />
-            <CommentsList comments={articleInfo.comments} />
+            <AddCommentForm articleName={articleId} 
+            
+            onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)} />
+            
+            <CommentsList comments={articleInfo.comments} articleInfo={articleInfo}  
+            
+            onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)} />
         </div>
     );
 };
