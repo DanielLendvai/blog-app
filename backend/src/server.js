@@ -1,5 +1,5 @@
 import express from "express";
-import {db, connectToDb} from './db.js'
+import { db, connectToDb } from "./db.js";
 
 // let articlesInfo = [
 //     {
@@ -54,8 +54,8 @@ app.put("/api/articles/:name/upvote", async (req, res) => {
 });
 
 //downwote
-app.put("/api/articles/:name/downvote", async (req,res)=> {
-    const {name} = req.params;
+app.put("/api/articles/:name/downvote", async (req, res) => {
+    const { name } = req.params;
 
     await db.collection("articles").updateOne(
         { name },
@@ -70,8 +70,7 @@ app.put("/api/articles/:name/downvote", async (req,res)=> {
     } else {
         res.send("That article doesn't exist");
     }
-})
-
+});
 //comment
 app.post("/api/articles/:name/comments", async (req, res) => {
     const { name } = req.params;
@@ -86,15 +85,34 @@ app.post("/api/articles/:name/comments", async (req, res) => {
     const article = await db.collection("articles").findOne({ name });
 
     if (article) {
+        res.json(article);
+    } else {
+        res.send("that article doesn't exist");
+    }
+});
+//delete comment
+app.delete("/api/articles/:name/comments", async (req, res) => {
+    const { name } = req.params;
+    const { postedBy, text } = req.body;
+
+    await db.collection("articles").updateOne(
+        { name },
+        {
+            $pull: { comments: { postedBy, text } },
+        }
+    );
+    const article = await db.collection("articles").findOne({ name });
+
+    if (article) {
         res.send(article.comments);
     } else {
         res.send("that article doesn't exist");
     }
 });
 
-connectToDb(()=> {
-    console.log("connected to db")
+connectToDb(() => {
+    console.log("connected to db");
     app.listen(8000, () => {
         console.log("server is listening on port 8000");
     });
-})
+});
