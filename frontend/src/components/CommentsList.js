@@ -26,7 +26,7 @@ let num = 0;
                 >
                     <h4>{comment.postedBy}</h4>
                     <p>{comment.text}</p>
-                    <button disabled onClick={deleteComment}>Delete</button>
+                    {/* <button onClick={deleteComment}>Delete</button> */}
                 </div>
             ))}
         </div>

@@ -5,6 +5,7 @@ import NotFoundPage from "./NotFoundPage";
 import articles from "./article-content";
 import CommentsList from "../components/CommentsList";
 import AddCommentForm from "../components/AddCommentForm";
+import useUser from "../hooks/useUser";
 import "./Article.css";
 import { Paper } from "@mui/material";
 
@@ -13,9 +14,11 @@ const Article = () => {
         upvotes: 0,
         comments: [],
     });
-    // const params = useParams();
     const { articleId } = useParams();
 
+    const { user, isLoading } = useUser();
+    console.log(user);
+    
     useEffect(() => {
         const loadArticleInfo = async () => {
             const response = await axios.get(`/api/articles/${articleId}`);
@@ -25,9 +28,6 @@ const Article = () => {
         loadArticleInfo();
     }, [articleId]);
 
-    // const articleId = params.articleId;
-    // destructured
-
     const article = articles.find((article) => article.name === articleId);
 
     const addUpvote = async () => {
@@ -35,24 +35,27 @@ const Article = () => {
         const updatedArticle = response.data;
         setArticleInfo(updatedArticle);
     };
-
     const addDowvote = async () => {
         const response = await axios.put(`/api/articles/${articleId}/downvote`);
         const updatedArticle = response.data;
         setArticleInfo(updatedArticle);
     };
-    // console.log(articleInfo)
+
     if (!article) {
         return <NotFoundPage />;
     }
-    // console.log(articleInfo )
+
     return (
         <div className="article-container">
             <h1>{article.title}</h1>
-            <div className="vote-buttons">
-                <button onClick={addUpvote}>up</button>
-                <button onClick={addDowvote}>down</button>
-            </div>
+            {user ? (
+                <div className="vote-buttons">
+                    <button onClick={addUpvote}>up</button>
+                    <button onClick={addDowvote}>down</button>
+                </div>
+            ) : (
+                "Please log-in to rate."
+            )}
             <p>This article has {articleInfo.upvotes} upvote(s).</p>
             <Paper
                 sx={{
@@ -67,13 +70,25 @@ const Article = () => {
                     <p key={index}>{paragraph}</p>
                 ))}
             </Paper>
-            <Paper sx={{ display: "flex", width: "800px", maxHeight:"200px",gap:"20px",padding:"20px"}}>
-                <AddCommentForm
-                    articleName={articleId}
-                    onArticleUpdated={(updatedArticle) =>
-                        setArticleInfo(updatedArticle)
-                    }
-                />
+            <Paper
+                sx={{
+                    display: "flex",
+                    width: "800px",
+                    maxHeight: "200px",
+                    gap: "20px",
+                    padding: "20px",
+                }}
+            >
+                {user ? (
+                    <AddCommentForm
+                        articleName={articleId}
+                        onArticleUpdated={(updatedArticle) =>
+                            setArticleInfo(updatedArticle)
+                        }
+                    />
+                ) : (
+                    "Please log-in to add comments."
+                )}
                 <CommentsList
                     articleInfo={articleInfo}
                     setArticleInfo={setArticleInfo}

@@ -4,9 +4,9 @@ const ArticlesList = ({ articles }) => {
     return (
         <>
             {articles.map((article) => (
-                <Card variant="outlined" sx={{"padding":"20px"}}>
+                <Card key={article.name} variant="outlined" sx={{"padding":"20px"}}>
                     <Link
-                        key={article.name}
+                        
                         className="article-list-item"
                         to={`/articles/${article.name}`}
                     >

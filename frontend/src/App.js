@@ -8,8 +8,11 @@ import NavBar from "./NavBar";
 import LoginPage from "./pages/LoginPage";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import useUser from "./hooks/useUser";
 
 function App() {
+    const { user, setIsLoading } = useUser();
+    
     return (
         <BrowserRouter>
             <div className="App">
@@ -26,7 +29,19 @@ function App() {
                             path="/articles/:articleId"
                             element={<Article />}
                         />
-                        <Route path="/login" element={<LoginPage />} />
+                        <Route
+                            path="/login"
+                            element={
+                                user ? (
+                                    <div>
+                                        <p>You already logged in.</p>
+                                        <button>Log out.</button>
+                                    </div>
+                                ) : (
+                                    <LoginPage />
+                                )
+                            }
+                        />
                         <Route
                             path="/create-account"
                             element={<CreateAccountPage />}
