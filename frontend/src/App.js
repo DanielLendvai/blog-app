@@ -5,6 +5,8 @@ import Article from "./pages/Article";
 import ArticlesListPage from "./pages/ArticlesListPage";
 import About from "./pages/About";
 import NavBar from "./NavBar";
+import LoginPage from "./pages/LoginPage";
+import CreateAccountPage from "./pages/CreateAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
@@ -23,6 +25,11 @@ function App() {
                         <Route
                             path="/articles/:articleId"
                             element={<Article />}
+                        />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route
+                            path="/create-account"
+                            element={<CreateAccountPage />}
                         />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>

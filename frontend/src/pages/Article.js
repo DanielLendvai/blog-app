@@ -5,7 +5,6 @@ import NotFoundPage from "./NotFoundPage";
 import articles from "./article-content";
 import CommentsList from "../components/CommentsList";
 import AddCommentForm from "../components/AddCommentForm";
-import Card from "@mui/material/Card";
 import "./Article.css";
 import { Paper } from "@mui/material";
 
