@@ -1,7 +1,7 @@
 import axios from "axios";
+import "../App.css"
 
-
-const CommentsList = ({ articleInfo, onArticleUpdated }) => {
+const CommentsList = ({ articleInfo, setArticleInfo }) => {
 let num = 0;
     const deleteComment = async () => {
         const response = await axios.delete(
@@ -12,13 +12,13 @@ let num = 0;
             }
         );
         const updatedArticle = response.data;
-        onArticleUpdated(updatedArticle);
+        setArticleInfo(updatedArticle);
         console.log(articleInfo);
     };
 
     return (
-        <>
-            <h3>Comments:</h3>
+        <div className="comments-container">
+            <h3><i>Comments: </i></h3>
             {articleInfo.comments.map((comment) => (
                 <div
                     className="comment"
@@ -26,10 +26,10 @@ let num = 0;
                 >
                     <h4>{comment.postedBy}</h4>
                     <p>{comment.text}</p>
-                    <button onClick={deleteComment}>AAA</button>
+                    <button onClick={deleteComment}>Delete</button>
                 </div>
             ))}
-        </>
+        </div>
     );
 };
 

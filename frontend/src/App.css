@@ -32,10 +32,17 @@
   font-size: 2vh;
 }
 #root #page-body .comments-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+#root #page-body .comments-container .comment {
+  min-width: 200px;
+}
+#root #page-body .article-container {
+  height: 100%;
+  margin-top: 40px;
 }
 #root #page-body .article-list-item {
   text-decoration: none;
@@ -45,4 +52,10 @@
 #root #page-body .article-list-item p {
   padding-bottom: 32px;
   border-bottom: 2px solid black;
+}
+#root #page-body .add-comment-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }/*# sourceMappingURL=App.css.map */

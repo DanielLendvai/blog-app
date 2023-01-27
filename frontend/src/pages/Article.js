@@ -5,7 +5,9 @@ import NotFoundPage from "./NotFoundPage";
 import articles from "./article-content";
 import CommentsList from "../components/CommentsList";
 import AddCommentForm from "../components/AddCommentForm";
+import Card from "@mui/material/Card";
 import "./Article.css";
+import { Paper } from "@mui/material";
 
 const Article = () => {
     const [articleInfo, setArticleInfo] = useState({
@@ -27,7 +29,7 @@ const Article = () => {
     // const articleId = params.articleId;
     // destructured
 
-    const article = articles.find(article => article.name === articleId);
+    const article = articles.find((article) => article.name === articleId);
 
     const addUpvote = async () => {
         const response = await axios.put(`/api/articles/${articleId}/upvote`);
@@ -53,16 +55,31 @@ const Article = () => {
                 <button onClick={addDowvote}>down</button>
             </div>
             <p>This article has {articleInfo.upvotes} upvote(s).</p>
-            {article.content.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-            ))}
-            <AddCommentForm articleName={articleId} 
-            
-            onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)} />
-            
-            <CommentsList comments={articleInfo.comments} articleInfo={articleInfo}  
-            
-            onArticleUpdated={updatedArticle => setArticleInfo(updatedArticle)} />
+            <Paper
+                sx={{
+                    padding: "30px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                }}
+                elevation={3}
+            >
+                {article.content.map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                ))}
+            </Paper>
+            <Paper sx={{ display: "flex", width: "800px", maxHeight:"200px",gap:"20px",padding:"20px"}}>
+                <AddCommentForm
+                    articleName={articleId}
+                    onArticleUpdated={(updatedArticle) =>
+                        setArticleInfo(updatedArticle)
+                    }
+                />
+                <CommentsList
+                    articleInfo={articleInfo}
+                    setArticleInfo={setArticleInfo}
+                />
+            </Paper>
         </div>
     );
 };
