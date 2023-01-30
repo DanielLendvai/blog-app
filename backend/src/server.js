@@ -1,33 +1,40 @@
 import express from "express";
 import { db, connectToDb } from "./db.js";
+import fs from "fs";
+import admin from "firebase-admin";
 
-// let articlesInfo = [
-//     {
-//         name: "learn-react",
-//         upvotes: 0,
-//         comments: [],
-//     },
-//     {
-//         name: "learn-node",
-//         upvotes: 0,
-//         comments: [],
-//     },
-//     {
-//         name: "mongodb",
-//         upvotes: 0,
-//         comments: [],
-//     },
-// ];
+const credentials = JSON.parse(fs.readFileSync("../credentials.json"));
+
+admin.initializeApp({
+    credential: admin.credential.cert(credentials),
+});
 
 const app = express();
 app.use(express.json());
 
+//authorization
+app.use(async (req, res, next) => {
+    const { authtoken } = req.headers;
+    if (authtoken) {
+        try {
+            req.user = await admin.auth().verifyIdToken(authtoken);
+            console.log(req.user);
+        } catch (e) {
+            res.sendStatus(400);
+        }
+    }
+    next();
+});
+
 //display
 app.get("/api/articles/:name", async (req, res) => {
     const { name } = req.params;
+    const { uid } = req.user;
 
     const article = await db.collection("articles").findOne({ name });
     if (article) {
+        const upvoteIds = article.upvoteIds || [];
+        article.canUpvote = uid && !upvoteIds.include(uid);
         res.json(article);
     } else {
         res.sendStatus(404);

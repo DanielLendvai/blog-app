@@ -44,7 +44,6 @@ const Article = () => {
     };
 
 
-
     if (!article) {
         return <NotFoundPage />;
     }
