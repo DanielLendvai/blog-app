@@ -10,7 +10,6 @@ nav ul {
 nav ul li {
   font-size: 22px;
   list-style-type: none;
-  text-transform: uppercase;
   letter-spacing: 0.2rem;
 }
 nav ul li a {

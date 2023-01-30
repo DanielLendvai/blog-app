@@ -32,7 +32,6 @@ function App() {
         <BrowserRouter>
             <div className="App">
                 <NavBar />
-                <LogOut />
                 <div id="page-body">
                     <Routes>
                         <Route path="/" element={<Home />} />

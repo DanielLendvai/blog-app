@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
-import "./NavBar.css"
+import LogOut from "./components/LogOut";
+import useUser from "./hooks/useUser";
+import "./NavBar.css";
 
 const NavBar = () => {
+    const { user } = useUser();
     return (
         <nav>
             <ul>
@@ -14,9 +17,7 @@ const NavBar = () => {
                 <li>
                     <Link to="/articles">Articles</Link>
                 </li>
-                <li>
-                    <Link to="/login">Log-in</Link>
-                </li>
+                <li>{user ? <LogOut /> : <Link to="/login">Log-in</Link>}</li>
             </ul>
         </nav>
     );

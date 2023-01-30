@@ -3,7 +3,7 @@ import { db, connectToDb } from "./db.js";
 import fs from "fs";
 import admin from "firebase-admin";
 
-const credentials = JSON.parse(fs.readFileSync("../credentials.json"));
+const credentials = JSON.parse(fs.readFileSync("./credentials.json"));
 
 admin.initializeApp({
     credential: admin.credential.cert(credentials),
