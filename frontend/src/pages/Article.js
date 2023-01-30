@@ -9,16 +9,18 @@ import useUser from "../hooks/useUser";
 import "./Article.css";
 import { Paper } from "@mui/material";
 
+
 const Article = () => {
     const [articleInfo, setArticleInfo] = useState({
         upvotes: 0,
         comments: [],
     });
     const { articleId } = useParams();
+    
 
     const { user, isLoading } = useUser();
     console.log(user);
-    
+
     useEffect(() => {
         const loadArticleInfo = async () => {
             const response = await axios.get(`/api/articles/${articleId}`);
@@ -41,12 +43,15 @@ const Article = () => {
         setArticleInfo(updatedArticle);
     };
 
+
+
     if (!article) {
         return <NotFoundPage />;
     }
 
     return (
         <div className="article-container">
+            
             <h1>{article.title}</h1>
             {user ? (
                 <div className="vote-buttons">

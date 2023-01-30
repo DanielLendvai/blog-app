@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import useUser from "./hooks/useUser";
+import LogOut from "./components/LogOut";
 
 function App() {
     const { user, setIsLoading } = useUser();
@@ -17,6 +18,7 @@ function App() {
         <BrowserRouter>
             <div className="App">
                 <NavBar />
+                <LogOut />
                 <div id="page-body">
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -35,7 +37,7 @@ function App() {
                                 user ? (
                                     <div>
                                         <p>You already logged in.</p>
-                                        <button>Log out.</button>
+                                        <LogOut>Log out.</LogOut>
                                     </div>
                                 ) : (
                                     <LoginPage />

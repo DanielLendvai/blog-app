@@ -2,6 +2,7 @@ import { Paper } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import LogOut from "../components/LogOut";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -38,7 +39,7 @@ const LoginPage = () => {
             />
             <input
                 value={password}
-                type="pasword"
+                type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Your password"
             />
