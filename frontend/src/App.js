@@ -10,10 +10,24 @@ import CreateAccountPage from "./pages/CreateAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import useUser from "./hooks/useUser";
 import LogOut from "./components/LogOut";
+import { Alert } from "@mui/material";
+import { createTheme } from "@mui/material";
 
 function App() {
-    const { user, setIsLoading } = useUser();
+    const { user } = useUser();
     
+//main theme
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: "#000000",
+            },
+            secondary: {
+                main: "#ff6f00",
+            },
+        },
+    });
+
     return (
         <BrowserRouter>
             <div className="App">
@@ -36,11 +50,10 @@ function App() {
                             element={
                                 user ? (
                                     <div>
-                                        <p>You already logged in.</p>
-                                        <LogOut>Log out.</LogOut>
+                                        <Alert>You're already logged in.</Alert>
                                     </div>
                                 ) : (
-                                    <LoginPage />
+                                    <LoginPage theme={theme} />
                                 )
                             }
                         />

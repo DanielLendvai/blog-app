@@ -1,10 +1,9 @@
-import { Paper } from "@mui/material";
+import { Button, Paper, TextField, ThemeProvider } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import LogOut from "../components/LogOut";
 
-const LoginPage = () => {
+const LoginPage = ({theme}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -21,7 +20,8 @@ const LoginPage = () => {
     };
 
     return (
-        <Paper
+        <ThemeProvider theme={theme}>
+        <Paper 
             sx={{
                 padding: "20px",
                 display: "flex",
@@ -31,21 +31,24 @@ const LoginPage = () => {
         >
             <h1>Log in</h1>
             {error && <p className="error">{error}</p>}
-            <input
+            <TextField
+            variant="standard"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
                 type="email"
             />
-            <input
+            <TextField
+            variant="standard"
                 value={password}
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Your password"
             />
-            <button onClick={logIn}>Log-in</button>
-            <Link to="/create-account">Create your account here.</Link>
+            <Button color="primary" variant="outlined" onClick={logIn}>Log-in</Button>
+            <Link underline="none" to="/create-account">Create your account here.</Link>
         </Paper>
+        </ThemeProvider>
     );
 };
 export default LoginPage;
