@@ -50,7 +50,6 @@ const Article = () => {
 
     return (
         <div className="article-container">
-            
             <h1>{article.title}</h1>
             {user ? (
                 <div className="vote-buttons">

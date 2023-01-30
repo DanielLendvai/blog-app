@@ -29,7 +29,6 @@
 #root #page-body .about-container p,
 #root #page-body .welcome-container p {
   text-align: justify;
-  font-size: 2vh;
 }
 #root #page-body .comments-container {
   width: 100%;
@@ -40,7 +39,8 @@
 #root #page-body .comments-container .comment {
   min-width: 200px;
 }
-#root #page-body .article-container {
+#root #page-body .article-container,
+#root #page-body .articles-container {
   height: 100%;
   margin-top: 40px;
 }
@@ -49,13 +49,15 @@
   color: black;
   padding: 16px 0 0 0;
 }
-#root #page-body .article-list-item p {
-  padding-bottom: 32px;
-  border-bottom: 2px solid black;
-}
 #root #page-body .add-comment-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 760px) {
+  .article-list-item {
+    font-size: 0.8rem;
+  }
 }/*# sourceMappingURL=App.css.map */
