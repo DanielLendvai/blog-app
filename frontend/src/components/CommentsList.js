@@ -13,9 +13,9 @@ let num = 0;
         );
         const updatedArticle = response.data;
         setArticleInfo(updatedArticle);
-        console.log(articleInfo);
+        
     };
-
+    console.log(articleInfo.comments);
     return (
         <div className="comments-container">
             <h3><i>Comments: </i></h3>

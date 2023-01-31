@@ -51,9 +51,14 @@
 }
 #root #page-body .add-comment-form {
   display: flex;
+  gap: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+#root #page-body .comments-field {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 760px) {

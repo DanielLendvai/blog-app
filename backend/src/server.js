@@ -15,88 +15,115 @@ app.use(express.json());
 //authorization
 app.use(async (req, res, next) => {
     const { authtoken } = req.headers;
+
     if (authtoken) {
         try {
             req.user = await admin.auth().verifyIdToken(authtoken);
-            console.log(req.user);
+            // console.log(req.user);
         } catch (e) {
-            res.sendStatus(400);
+           return res.sendStatus(400);
         }
     }
+
+    req.user = req.user || {};
     next();
 });
 
 //display
-app.get("/api/articles/:name", async (req, res) => {
+app.get('/api/articles/:name', async (req, res) => {
     const { name } = req.params;
     const { uid } = req.user;
 
-    const article = await db.collection("articles").findOne({ name });
+    const article = await db.collection('articles').findOne({ name });
+
     if (article) {
         const upvoteIds = article.upvoteIds || [];
-        article.canUpvote = uid && !upvoteIds.include(uid);
+        article.canUpvote = uid && !upvoteIds.includes(uid);
         res.json(article);
     } else {
         res.sendStatus(404);
     }
 });
 
-//upvote
-app.put("/api/articles/:name/upvote", async (req, res) => {
-    const { name } = req.params;
-
-    await db.collection("articles").updateOne(
-        { name },
-        {
-            $inc: { upvotes: 1 },
-        }
-    );
-    const article = await db.collection("articles").findOne({ name });
-
-    if (article) {
-        res.json(article);
+app.use((req, res, next) => {
+    if (req.user) {
+        next();
     } else {
-        res.send("That article doesn't exist");
+        res.sendStatus(401);
     }
 });
 
+//upvote
+app.put('/api/articles/:name/upvote', async (req, res) => {
+    const { name } = req.params;
+    const { uid } = req.user;
+
+    const article = await db.collection('articles').findOne({ name });
+
+    if (article) {
+        const upvoteIds = article.upvoteIds || [];
+        const canUpvote = uid && !upvoteIds.includes(uid);
+   
+        if (canUpvote) {
+            await db.collection('articles').updateOne({ name }, {
+                $inc: { upvotes: 1 },
+                $push: { upvoteIds: uid },
+            });
+        }
+
+        const updatedArticle = await db.collection('articles').findOne({ name });
+        res.json(updatedArticle);
+    } else {
+        res.send('That article doesn\'t exist');
+    }
+});
 //downwote
 app.put("/api/articles/:name/downvote", async (req, res) => {
     const { name } = req.params;
+    const { uid } = req.user;
 
-    await db.collection("articles").updateOne(
-        { name },
-        {
-            $inc: { upvotes: -1 },
-        }
-    );
     const article = await db.collection("articles").findOne({ name });
-
     if (article) {
-        res.json(article);
+        const upvoteIds = article.upvoteIds || [];
+        const canUpvote = uid && !upvoteIds.includes(uid);
+
+        if (canUpvote) {
+            await db.collection("articles").updateOne(
+                { name },
+                {
+                    $inc: { upvotes: -1 },
+                    $push: { upvoteIds: uid },
+                }
+            );
+        }
+
+        const updatedArticle = await db
+            .collection("articles")
+            .findOne({ name });
+        res.json(updatedArticle);
     } else {
         res.send("That article doesn't exist");
     }
 });
-//comment
-app.post("/api/articles/:name/comments", async (req, res) => {
-    const { name } = req.params;
-    const { postedBy, text } = req.body;
 
-    await db.collection("articles").updateOne(
-        { name },
-        {
-            $push: { comments: { postedBy, text } },
-        }
-    );
-    const article = await db.collection("articles").findOne({ name });
+//comment
+app.post('/api/articles/:name/comments', async (req, res) => {
+    const { name } = req.params;
+    const { text } = req.body;
+    const { email } = req.user;
+
+    await db.collection('articles').updateOne({ name }, {
+        $push: { comments: { postedBy: email, text } },
+    });
+    const article = await db.collection('articles').findOne({ name });
 
     if (article) {
         res.json(article);
     } else {
-        res.send("that article doesn't exist");
+        res.send('That article doesn\'t exist!');
     }
 });
+
 //delete comment
 app.delete("/api/articles/:name/comments", async (req, res) => {
     const { name } = req.params;

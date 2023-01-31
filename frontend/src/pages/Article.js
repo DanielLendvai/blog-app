@@ -9,21 +9,23 @@ import useUser from "../hooks/useUser";
 import "./Article.css";
 import { Paper } from "@mui/material";
 
-
 const Article = () => {
     const [articleInfo, setArticleInfo] = useState({
         upvotes: 0,
         comments: [],
     });
     const { articleId } = useParams();
-    
 
     const { user, isLoading } = useUser();
-    console.log(user);
+    // console.log(user);
 
     useEffect(() => {
         const loadArticleInfo = async () => {
-            const response = await axios.get(`/api/articles/${articleId}`);
+            const token = user && await user.getIdToken();
+            const headers = token ? { authtoken: token } : {};
+            const response = await axios.get(`/api/articles/${articleId}`, {
+                headers,
+            });
             const newArticleInfo = response.data;
             setArticleInfo(newArticleInfo);
         };
@@ -33,16 +35,27 @@ const Article = () => {
     const article = articles.find((article) => article.name === articleId);
 
     const addUpvote = async () => {
-        const response = await axios.put(`/api/articles/${articleId}/upvote`);
+        const token = user && (await user.getIdToken());
+        const headers = token ? { authtoken: token } : {};
+        const response = await axios.put(
+            `/api/articles/${articleId}/upvote`,
+            null,
+            { headers }
+        );
         const updatedArticle = response.data;
         setArticleInfo(updatedArticle);
     };
     const addDowvote = async () => {
-        const response = await axios.put(`/api/articles/${articleId}/downvote`);
+        const token = user && (await user.getIdToken());
+        const headers = token ? { authtoken: token } : {};
+        const response = await axios.put(
+            `/api/articles/${articleId}/downvote`,
+            null,
+            { headers }
+        );
         const updatedArticle = response.data;
         setArticleInfo(updatedArticle);
     };
-
 
     if (!article) {
         return <NotFoundPage />;
@@ -73,11 +86,11 @@ const Article = () => {
                     <p key={index}>{paragraph}</p>
                 ))}
             </Paper>
+            <div className="comments-field">
             <Paper
                 sx={{
                     display: "flex",
                     width: "800px",
-                    maxHeight: "200px",
                     gap: "20px",
                     padding: "20px",
                 }}
@@ -97,6 +110,7 @@ const Article = () => {
                     setArticleInfo={setArticleInfo}
                 />
             </Paper>
+            </div>
         </div>
     );
 };
